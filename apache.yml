@@ -1,0 +1,14 @@
+---
+- hosts: web
+  tasks:
+   - name: Update system
+     apt: update_cache=yes
+    
+   - name: Install Apache
+     apt: pkg=apache2 state=present
+
+   - name: Start apache
+     service: name=apache2 state=running enabled=yes
+
+   - name: dump the txt file as a html file
+     copy: src=templates/index.txt dest=/var/www/index.html

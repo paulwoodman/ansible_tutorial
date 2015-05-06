@@ -1,0 +1,5 @@
+<html>
+<body>
+<p>ansible deployed this host</p>
+</body>
+</html>
