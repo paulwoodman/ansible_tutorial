@@ -1,0 +1,101 @@
+---
+# tasks file for virtual_environments
+
+  - name: Create Virtual Environments Directory
+    ansible.builtin.file:
+      path: /opt/experian-envs
+      state: directory
+      owner: awx
+      group: awx
+      mode: "u=rwx,g=rx,o=rx"
+
+  - name: Copy requirements.txt file for python3.6
+    ansible.builtin.copy:
+      src: requirements_standard_36.txt
+      dest: /opt/experian-envs/requirements_standard_36.txt
+
+  - name: Copy requirements.txt file for python3.8
+    ansible.builtin.copy:
+      src: requirements_standard_38.txt
+      dest: /opt/experian-envs/requirements_standard_38.txt
+
+  - name: Copy requirements.txt file for eec
+    ansible.builtin.copy:
+      src: requirements_eec.txt
+      dest: /opt/experian-envs/requirements_eec.txt
+
+  - name: Copy requirements.txt file for infra_automation
+    ansible.builtin.copy:
+      src: requirements_infra_automation.txt
+      dest: /opt/experian-envs/requirements_infra_automation.txt
+
+  - name: Copy requirements.txt file for oneview
+    ansible.builtin.copy:
+      src: requirements_oneview.txt
+      dest: /opt/experian-envs/requirements_oneview.txt
+
+  - name: Copy requirements.txt file for vsphere
+    ansible.builtin.copy:
+      src: requirements_vsphere.txt
+      dest: /opt/experian-envs/requirements_vsphere.txt
+
+  - name: Install pre-requisite packages
+    ansible.builtin.package:
+      name: '{{ item }}'
+      state: latest
+    with_items: "{{ pre_req_packages }}"
+
+  - name: Create virtual environments
+    ansible.builtin.pip:
+      name: virtualenv
+      state: latest
+
+  - name: Create virtual environments
+    ansible.builtin.shell: |
+      virtualenv -p /usr/bin/python{{ item.value.python_version }} /opt/experian-envs/{{ item.key }}
+      source /opt/experian-envs/{{ item.key }}/bin/activate
+      umask 0022
+      pip install ansible=={{ item.value.ansible_version }} -U
+      pip install -r {{ item.value.requirements_file }}
+    with_dict: "{{ virtual_environments }}"
+
+#Install packages in virtual environments (not used as for now since everything is included in the requirements.txt file) 
+  # - name: Install packages in virtual environments
+  #   ansible.builtin.pip:
+  #     name: "{{ item }}"
+  #     virtualenv: "/opt/experian-envs/{{ item.0 }}"
+  #   with_subelements:
+  #     - "{{ virtual_environments }}"
+  #     - packages
+
+  - name: Install the VMware vSphere Automation SDK for Python (vsphere venv)
+    ansible.builtin.shell: |
+      source /opt/experian-envs/vsphere/bin/activate
+      umask 0022
+      pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
+    ignore_errors: true
+
+  - name: Install the VMware vSphere Automation SDK for Python (vsphere venv) - Second Try
+    ansible.builtin.shell: |
+      source /opt/experian-envs/vsphere/bin/activate
+      umask 0022
+      pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
+    ignore_errors: true
+
+  - name: Install the VMware vSphere Automation SDK for Python (infra_automation venv)
+    ansible.builtin.shell: |
+      source /opt/experian-envs/infra_automation/bin/activate
+      umask 0022
+      pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
+    ignore_errors: true
+
+  - name: Install the VMware vSphere Automation SDK for Python (infra_automation venv) - Second Try
+    ansible.builtin.shell: |
+      source /opt/experian-envs/infra_automation/bin/activate
+      umask 0022
+      pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
+    ignore_errors: true
+
+  - name: Set Proper Permissions on the venvs
+    ansible.builtin.shell: |
+      chown -R awx:awx /opt/experian-envs
