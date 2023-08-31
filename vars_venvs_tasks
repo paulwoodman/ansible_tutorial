@@ -1,0 +1,69 @@
+---
+# vars file for virtual_environments
+
+pre_req_packages:
+  - gcc 
+  - python3.8 
+  - libcurl-devel 
+  - libxml2-devel 
+  - krb5-devel 
+  - python36-devel 
+  - python38-devel 
+  - openssl-devel
+
+virtual_environments:
+  common_global:
+    path: /opt/experian-envs/common_global
+    python_version: 3.6
+    ansible_version: 2.9.27
+    requirements_file: /opt/experian-envs/requirements_standard_36.txt
+  vsphere:
+    path: /opt/experian-envs/vsphere
+    python_version: 3.6
+    ansible_version: 2.9.27
+    requirements_file: /opt/experian-envs/requirements_vsphere.txt
+  networkdev:
+    path: /opt/experian-envs/networkdev
+    python_version: 3.6
+    ansible_version: 2.9.27
+    requirements_file: /opt/experian-envs/requirements_standard_36.txt
+  oneview:
+    path: /opt/experian-envs/oneview
+    python_version: 3.6
+    ansible_version: 2.9.27
+    requirements_file: /opt/experian-envs/requirements_oneview.txt
+  infra_automation:
+    path: /opt/experian-envs/infra_automation
+    python_version: 3.6
+    ansible_version: 2.9.27
+    requirements_file: /opt/experian-envs/requirements_infra_automation.txt
+  hada:
+    path: /opt/experian-envs/hada
+    python_version: 3.6
+    ansible_version: 2.9.27
+    requirements_file: /opt/experian-envs/requirements_standard_36.txt
+  windows_patching:
+    path: /opt/experian-envs/windows_patching
+    python_version: 3.6
+    ansible_version: 2.9.27
+    requirements_file: /opt/experian-envs/requirements_standard_36.txt
+  networkgns:
+    path: /opt/experian-envs/networkgns
+    python_version: 3.8
+    ansible_version: 2.9.27
+    requirements_file: /opt/experian-envs/requirements_standard_38.txt
+  eec:
+    path: /opt/experian-envs/eec
+    python_version: 3.6
+    ansible_version: 2.10.17
+    requirements_file: /opt/experian-envs/requirements_eec.txt
+
+#Example Virtual Environment with custom packages not in the requirements.txt file 
+  # eec:
+  #   path: /opt/experian-envs/eec
+  #   python_version: 3.6
+  #   ansible_version: 2.9.27
+  #   requirements_file: /opt/experian-envs/requirements_eec.txt
+  #   packages:
+  #     - package1
+  #     - package2
