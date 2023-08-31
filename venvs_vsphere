@@ -1,0 +1,29 @@
+source /opt/experian-envs/vsphere/bin/activate
+
+umask 0022
+
+pip install --upgrade pip==19.3.1
+
+pip install --upgrade setuptools==41.6.0
+
+pip install psutil
+
+pip install -r /opt/experian-envs/requirements.txt
+
+pip install --upgrade botocore boto boto3 pysnow 
+
+pip install awscli
+
+pip install pysnow 
+
+pip install ansible-tower-cli 
+
+pip3 install pysdk
+
+pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
+
+pip list | grep boto
+
+pip list | grep vSphere 
+
+deactivate 
